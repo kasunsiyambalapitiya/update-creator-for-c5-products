@@ -62,7 +62,7 @@ func Unzip(src, dest string) error {
 			os.MkdirAll(path, f.Mode())
 		} else {
 			os.MkdirAll(filepath.Dir(path), f.Mode())
-			f, err := os.OpenFile(path, os.O_WRONLY | os.O_CREATE | os.O_TRUNC, f.Mode())
+			f, err := os.OpenFile(path, os.O_RDWR | os.O_CREATE , f.Mode())
 			if err != nil {
 				return err
 			}
@@ -72,7 +72,8 @@ func Unzip(src, dest string) error {
 				}
 			}()
 
-			_, err = io.Copy(f, rc) // since rc has files content, we are copying it to the created empty
+			_, err = io.Copy(f, rc) // since readcloser has files content, we are copying it to the created
+			// empty
 			// file
 			if err != nil {
 				return err
